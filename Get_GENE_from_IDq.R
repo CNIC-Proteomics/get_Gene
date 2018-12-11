@@ -93,13 +93,18 @@ getSpeciesRedundancies <- function(x, preference_species) {
                       h_species <- substring(regmatches(x["FASTAProteinDescription"],
                                                         regexpr("OS=[a-zA-Z0-9]* [a-zA-Z0-9]*",
                                                                 x["FASTAProteinDescription"])), 4)
-                      if (h_species == "Homo sapiens"){
+                      if (h_species == "Homo sapiens"){ # Look for redundancies
                         redundancies <- x["Redundances"]
                         redundancies <- strsplit(redundancies, " -- ")
                         for (i in redundancies[[1]]){
                           r_species <- substring(regmatches(i, regexpr("OS=[a-zA-Z0-9]* [a-zA-Z0-9]*",
                                                                     i)), 4)
-                          if (r_species == preference_species){
+                          if (r_species == preference_species){ # Redundancy found
+                            gene <- substring(regmatches(i, regexpr("GN=[a-zA-Z0-9]*", i)), 4)
+                            if (length(gene) == 0) { # Redundancy does not contain Gene name
+                              return("No")
+                              break
+                            }
                             return(as.character(i))
                             break
                           }
@@ -120,7 +125,6 @@ if (get_species_redundancies == 0) {
 if (get_species_redundancies == 1) {
   IDq$Preference_Species <- apply(IDq, 1, getSpeciesRedundancies, preference_species)
   IDq$Gene <- apply(IDq, 1, getGeneName, preference_species)
-  #TODO: separate last column
   IDq <- IDq%>% separate(Gene, c("Gene", "Procedence"), sep=",")
 }
 
