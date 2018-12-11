@@ -7,7 +7,7 @@ R script that extracts Gene names from the FASTA identifiers for each row in an 
 
 * If no redundancy for that species is found, the original Gene name from the FASTA identifier will be returned.
 
-* If redundancies for that species are found, the Gene name for the first redundancy will be returned. If there is no Gene name, or if the Gene name is of type LOC*, the original Gene name will be returned.
+* If redundancies for that species are found, the Gene name for the first redundancy will be returned. If there is no Gene name, or if the Gene name is of type *[LOC*](https://www.ncbi.nlm.nih.gov/books/NBK3840/#genefaq.Conventions)*, the original Gene name will be returned.
 
 Rows where no Gene name is found are removed.
 
